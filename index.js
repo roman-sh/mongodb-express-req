@@ -1,5 +1,5 @@
-import whatwgUrl from 'whatwg-url'
-import { MongoClient } from 'mongodb'
+const whatwgUrl = require('whatwg-url')
+const { MongoClient } = require('mongodb')
 
 
 module.exports = (uri, opts = {}) => {
