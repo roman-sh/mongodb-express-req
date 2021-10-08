@@ -1,22 +1,24 @@
 'use strict'
 
-var MongoClient = require('mongodb').MongoClient
+const whatwgUrl = require('whatwg-url')
+const { MongoClient } = require('mongodb')
+
 
 module.exports = (uri, opts) => {
 	if (typeof uri !== 'string') {
 		throw new TypeError('Expected uri to be a string')
 	}
 
-  var dbName = /(?<=\/)\w*(?=\?)/.exec(uri)?.toString() || /(?<=\/)\w*(?=$)/.exec(uri)?.toString()
+  const dbName = whatwgUrl.basicURLParse(uri).path.toString()
   if (!dbName) {
 		throw new Error('Database name not found in connection string')
 	}
 
 	opts = opts || {}
-	var property = opts.property || 'db'
+	const property = opts.property || 'db'
 	delete opts.property
 
-	var connection
+	let connection
 
 	return function expressMongoDb(req, res, next) {
 		if (!connection) {
